@@ -6,11 +6,11 @@ using System.Net;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using syteline_api_example.Models;
+using syteline_api_examples.Models;
 
-namespace syteline_api_example.Helpers;
+namespace syteline_api_examples.Helpers;
 
-public class SytelineAPIRest_01
+public class SytelineAPI
 {
     private HttpClient HttpClient
     {
@@ -26,7 +26,7 @@ public class SytelineAPIRest_01
         get; set;
     } = new();
 
-    public SytelineAPIRest_01(SytelineConnection connection)
+    public SytelineAPI(SytelineConnection connection)
     {
 
         this.SytelineConnection = connection;

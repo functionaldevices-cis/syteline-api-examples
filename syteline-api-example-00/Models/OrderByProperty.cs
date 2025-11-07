@@ -8,7 +8,7 @@ using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace syteline_api_example.Models;
+namespace syteline_api_examples.Models;
 
 public class OrderByProperty
 {

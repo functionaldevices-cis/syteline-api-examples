@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace syteline_api_example.Models;
+namespace syteline_api_examples.Models;
 
 public class APIMethodResponse
 {

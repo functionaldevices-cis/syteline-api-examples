@@ -4,11 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Data;
-using syteline_api_example.Models;
+using syteline_api_examples.Models;
 
-namespace syteline_api_example.Helpers;
+namespace syteline_api_examples.Helpers;
 
-public class SytelineAPIRest_02
+public class SytelineAPI
 {
     private int RequestCap
     {
@@ -29,7 +29,7 @@ public class SytelineAPIRest_02
         get; set;
     } = new();
 
-    public SytelineAPIRest_02(SytelineConnection connection, int requestCap = 200)
+    public SytelineAPI(SytelineConnection connection, int requestCap = 200)
     {
 
         this.SytelineConnection = connection;

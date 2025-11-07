@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace syteline_api_example.Models;
+namespace syteline_api_examples.Models;
 
 public class SytelineCredentialsDirect
 {
