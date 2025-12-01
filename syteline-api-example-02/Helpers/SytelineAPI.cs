@@ -146,8 +146,6 @@ public class SytelineAPI
         bool totalCapNotMet = true;
         string? bookmark = null;
 
-        // IF WE ARE PAGINATING AND WE ARE USING SOAP, WE HAVE TO ADD THE ORDERBY AND PAGING PROPERTIES TO THE QUERY
-
         do
         {
 
@@ -196,7 +194,7 @@ public class SytelineAPI
 
     }
 
-    private APILoadCollectionResponse LoadCollectionBatch(string idoName, List<string> properties, string? filter, List<OrderByProperty>? orderBy = null, int? requestCap = 0, bool? distinct = null, string? clm = null, List<string>? clmParam = null, string? bookmark = null, string? pqc = null, bool? readOnly = null)
+    private APILoadCollectionResponse LoadCollectionBatch(string idoName, List<string> properties, string? filter, List<OrderByProperty>? orderBy = null, int? requestCap = null, bool? distinct = null, string? clm = null, List<string>? clmParam = null, string? bookmark = null, string? pqc = null, bool? readOnly = null)
     {
 
         // BUILD THE REQUEST
@@ -247,7 +245,7 @@ public class SytelineAPI
             "properties=" + string.Join(",", properties)
         ];
 
-        if (filter != null)
+        if (filter != null && filter != "")
         {
             lQueryPrameters.Add("filter=" +  EncodeValue(filter));
         }
@@ -257,19 +255,22 @@ public class SytelineAPI
             lQueryPrameters.Add("orderBy=" +  EncodeValue(orderBy));
         }
 
-        lQueryPrameters.Add("recordCap=" + EncodeValue(recordCap ?? 0));
+        if (recordCap != null)
+        {
+            lQueryPrameters.Add("recordCap=" + EncodeValue(recordCap));
+        }
 
         if (distinct != null)
         {
             lQueryPrameters.Add("distinct=" + EncodeValue(distinct));
         }
 
-        if (clm != null)
+        if (clm != null && clm != "")
         {
             lQueryPrameters.Add("clm=" + clm);
         }
 
-        if (clmParam != null)
+        if (clm != null && clm != "" && clmParam != null)
         {
             lQueryPrameters.Add("clmParam=" + EncodeValue(string.Join(",", clmParam)));
         }
