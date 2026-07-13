@@ -44,6 +44,10 @@ public class SytelineCredentialsION
     {
         get; init;
     }
+    public List<string> sc
+    {
+        get; init;
+    }
     public string ev
     {
         get; init;
@@ -77,7 +81,7 @@ public class SytelineCredentialsION
 
     public string service_account_secret_key => this.sask;
 
-    public SytelineCredentialsION(string ti = "", string cn = "", string dt = "", string ci = "", string cs = "", string iu = "", string pu = "", string oa = "", string ot = "", string or = "", string ev = "", string v = "", string saak = "", string sask = "")
+    public SytelineCredentialsION(string ti = "", string cn = "", string dt = "", string ci = "", string cs = "", string iu = "", string pu = "", string oa = "", string ot = "", string or = "", List<string>? sc = null, string ev = "", string v = "", string saak = "", string sask = "")
     {
 
         this.ti = ti;
@@ -90,6 +94,7 @@ public class SytelineCredentialsION
         this.oa = oa;
         this.ot = ot;
         this.or = or;
+        this.sc = sc ?? [];
         this.ev = ev;
         this.v = v;
         this.saak = saak;
