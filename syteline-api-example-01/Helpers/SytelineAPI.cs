@@ -163,7 +163,7 @@ public class SytelineAPI
 
     }
 
-    private static string BuildLoadCollectionParametersString(List<string> properties, string? filter = null, string? orderBy = null, int? recordCap = null, bool? distinct = null, string? clm = null, List<string>? clmParam = null, string? bookmark = null, string? pqc = null, bool? readOnly = null)
+    private static string BuildLoadCollectionParametersString(List<string> properties, string? filter = null, string? orderBy = null, int? recordCap = null, bool? distinct = null, string? clm = null, List<string>? clmParam = null, string? loadType = null, string? bookmark = null, string? pqc = null, bool? readOnly = null)
     {
 
         // CREATE LIST OF PARAMTERS TO STRINGY
@@ -172,14 +172,14 @@ public class SytelineAPI
             "properties=" + string.Join(",", properties)
         ];
 
-        if (filter != null)
+        if (filter != null && filter != "")
         {
-            lQueryPrameters.Add("filter=" +  EncodeValue(filter));
+            lQueryPrameters.Add("filter=" + EncodeValue(filter));
         }
 
-        if (orderBy != null)
+        if (orderBy != null && orderBy != "")
         {
-            lQueryPrameters.Add("orderBy=" +  EncodeValue(orderBy));
+            lQueryPrameters.Add("orderBy=" + EncodeValue(orderBy));
         }
 
         if (recordCap != null)
@@ -192,24 +192,27 @@ public class SytelineAPI
             lQueryPrameters.Add("distinct=" + EncodeValue(distinct));
         }
 
-        if (clm != null)
+        if (clm != null && clm != "")
         {
             lQueryPrameters.Add("clm=" + clm);
         }
 
-        if (clmParam != null)
+        if (clm != null && clm != "" && clmParam != null && clmParam.Count > 0)
         {
             lQueryPrameters.Add("clmParam=" + EncodeValue(string.Join(",", clmParam)));
         }
 
-        lQueryPrameters.Add("loadType=" + EncodeValue("NEXT"));
+        if (loadType != null && loadType != "")
+        {
+            lQueryPrameters.Add("loadType=" + EncodeValue(loadType));
+        }
 
-        if (bookmark != null)
+        if (bookmark != null && bookmark != "")
         {
             lQueryPrameters.Add("bookmark=" + EncodeValue(bookmark));
         }
 
-        if (pqc != null)
+        if (pqc != null && pqc != "")
         {
             lQueryPrameters.Add("pqc=" + EncodeValue(pqc));
         }
