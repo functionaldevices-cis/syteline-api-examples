@@ -6,22 +6,22 @@ To try it out, clone the repo, enter you credentials for whichever method you wa
 
 # Examples
 
-# Example 00 (RESTv2)
+## Example 00 (RESTv2)
 
 This example solely handles authentication and shows how to obtain auth tokens directly and through ION.
 
-# Example 01 (RESTv2)
+## Example 01 (RESTv2)
 
 This example show how to load/export records.
 
-# Example 02 (RESTv2)
+## Example 02 (RESTv2)
 
 This example shows how to load/export records in batches, using standard bookmark-based pagination.
 
-# Example 03 (RESTv2)
+## Example 03 (RESTv2)
 
 This example shows how to load/export records from CLMs in batches, using property-based pagination.
 
-# Example 04 (RESTv2)
+## Example 04 (RESTv2)
 
 This example shows how to import/insert records.
