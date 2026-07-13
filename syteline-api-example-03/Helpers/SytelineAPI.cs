@@ -156,26 +156,10 @@ public class SytelineAPI
         string? batchOrderByString;
 
         string paginationPropertyHighestValue = "";
-        List<string> propsAddedForPagination = [];
 
         // IF WE ARE PAGINATING WITH PROPERTY-BASED PAGINATION, WE HAVE TO ADD THE ORDERBY AND PAGING PROPERTIES TO THE QUERY
 
-        if (haveToPaginate && paginationMode == "propertyBased") {
-
-            if (!properties.Contains(paginationProperty))
-            {
-                propsAddedForPagination.Add(paginationProperty);
-            }
-            (orderBy ?? []).Select(property => property.OrderBy).ToList().ForEach(orderByProperty => {
-                if (!properties.Contains(orderByProperty))
-                {
-                    propsAddedForPagination.Add(orderByProperty);
-                }
-            });
-
-            propsAddedForPagination.ForEach(propAddedForPagination => properties.Add(propAddedForPagination));
-
-        }
+        List<string> propsAddedForPagination = paginationMode == "propertyBased" ? (new List<string>() { paginationProperty }).Concat(orderBy.Select(property => property.PropertyName)).Distinct().Where(property => !properties.Contains(property)).ToList() : [];
 
         do
         {
