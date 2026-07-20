@@ -37,25 +37,163 @@ namespace syteline_api_examples {
                 )
             );
 
-            // LOAD A SAMPLE REQUEST
+            // SAMPLE INSERT REQUESTS
 
-            APILoadCollectionResponse response = sytelineAPI.LoadCollection(
-                idoName: "ue_FIS_CustomLoadMethodExamples",
-                properties: [
-                    "PriceCode",
-                    "Item",
-                    "ListPrice",
-                ],
-                clm: "Example_03_LoadPricesForPricecode",
-                clmParam: [
-                    "PriceCode = 'Y25'",
-                    "Item ASC"
-                ],
-                paginationMode: "propertyBased",
-                readOnly: true
+            APIUpdateCollectionResponse response;
+
+            // INSERT TWO PLANNERCODE RECORDS
+
+            response = sytelineAPI.UpdateCollection(
+                idoName: "SLPlanners",
+                refreshAfterSave: true,
+                changes: [
+                    new(
+                        action: APIUpdateCollectionRequestChangeAction.Insert,
+                        properties: [
+                            new(
+                                name: "PlanCode",
+                                value: "Z01",
+                                modified: true
+                            ),
+                            new(
+                                name: "Description",
+                                value: "Test",
+                                modified: true
+                            ),
+                            new(
+                                name: "ShowInDropDownList",
+                                value: "1",
+                                modified: true
+                            )
+                        ]
+                    ),
+                    new(
+                        action: APIUpdateCollectionRequestChangeAction.Insert,
+                        properties: [
+                            new(
+                                name: "PlanCode",
+                                value: "Z02",
+                                modified: true
+                            ),
+                            new(
+                                name: "Description",
+                                value: "Test 2",
+                                modified: true
+                            ),
+                            new(
+                                name: "ShowInDropDownList",
+                                value: "1",
+                                modified: true
+                            )
+                        ]
+                    )
+                ]
             );
 
-            Console.WriteLine($"The request retrieved {response.Items.Count} items.");
+            // UPDATE ONE OF THEM
+
+            response = sytelineAPI.UpdateCollection(
+                idoName: "SLPlanners",
+                refreshAfterSave: true,
+                changes: [
+                    new(
+                        action: APIUpdateCollectionRequestChangeAction.Update,
+                        properties: [
+                            new(
+                                name: "PlanCode",
+                                value: "Z02",
+                                modified: false
+                            ),
+                            new(
+                                name: "Description",
+                                value: "Test 2 Modified",
+                                modified: true
+                            ),
+                            new(
+                                name: "ShowInDropDownList",
+                                value: "0",
+                                modified: true
+                            )
+                        ]
+                    )
+                ]
+            );
+
+            // INSERT A USER DEFINED TYPE AND CHILD VALUES
+
+            response = sytelineAPI.UpdateCollection(
+                idoName: "UserDefinedTypes",
+                changes: [
+                    new(
+                        action: APIUpdateCollectionRequestChangeAction.Insert,
+                        properties: [
+                            new(
+                                name: "Name",
+                                value: "MyUserDefinedColor",
+                                modified: true
+                            ),
+                            new(
+                                name: "Description",
+                                value: "This is a user defined type.",
+                                modified: true
+                            ),
+                            new(
+                                nestedCollection: new(
+                                    idoName: "UserDefinedTypeValues",
+                                    links: [
+                                        new(
+                                            parentProperty: "Name",
+                                            childProperty: "TypeName"
+                                        )
+                                    ],
+                                    changes: [
+                                        new(
+                                            action: APIUpdateCollectionRequestChangeAction.Insert,
+                                            properties: [
+                                                new(
+                                                    name: "TypeName",
+                                                    value: "MyUserDefinedColor",
+                                                    modified: true
+                                                ),
+                                                new(
+                                                    name: "Value",
+                                                    value: "Red",
+                                                    modified: true
+                                                ),
+                                                new(
+                                                    name: "Description",
+                                                    value: "This is red.",
+                                                    modified: true
+                                                )
+                                            ]
+                                        ),
+                                        new(
+                                            action: APIUpdateCollectionRequestChangeAction.Insert,
+                                            properties: [
+                                                new(
+                                                    name: "TypeName",
+                                                    value: "MyUserDefinedColor",
+                                                    modified: true
+                                                ),
+                                                new(
+                                                    name: "Value",
+                                                    value: "Green",
+                                                    modified: true
+                                                ),
+                                                new(
+                                                    name: "Description",
+                                                    value: "This is green.",
+                                                    modified: true
+                                                )
+                                            ]
+                                        )
+                                    ]
+                                )
+                            )
+                        ]
+                    )
+                ]
+            );
 
         }
 

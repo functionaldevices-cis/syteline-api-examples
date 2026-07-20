@@ -2,8 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
-using System.Data;
 using syteline_api_examples.Models;
 
 namespace syteline_api_examples.Helpers;
@@ -135,6 +133,7 @@ public class SytelineAPI
 
         // PARSE INPUT PARAMS
 
+        orderBy ??= [];
         string? orderByString = orderBy == null ? null : string.Join(", ", (orderBy ?? []).Select(property => property.OrderBy));
 
         // INIT GENERAL VARS
@@ -152,7 +151,6 @@ public class SytelineAPI
         string? bookmark = null;
 
         string? batchFilter;
-        List<string>? batchCLMParam;
         string? batchOrderByString;
 
         string paginationPropertyHighestValue = "";
@@ -253,6 +251,49 @@ public class SytelineAPI
 
     }
 
+    public APIUpdateCollectionResponse UpdateCollection(string idoName, List<APIUpdateCollectionRequestChange> changes, bool refreshAfterSave = false)
+    {
+
+        // BUILD THE REQUEST
+
+        string requestURL = this.SytelineConnection.BaseURL + "/IDORequestService/ido/update/" + idoName + "?" + BuildUpdateCollectionParametersString(
+            refresh: refreshAfterSave
+        );
+
+        HttpRequestMessage request = new()
+        {
+            Method = HttpMethod.Post,
+            RequestUri = new Uri(requestURL),
+            Headers =
+            {
+                { "Accept", "application/json" },
+                { "X-Infor-MongooseConfig", this.SytelineConnection.Config }
+            },
+            Content = new StringContent(
+                content: System.Text.Json.JsonSerializer.Serialize(
+                    new Dictionary<string, List<APIUpdateCollectionRequestChange>>()
+                    {
+                        ["Changes"] = changes
+                    }
+                ),
+                encoding: Encoding.UTF8,
+                mediaType: "application/json"
+            )
+        };
+        request.Headers.TryAddWithoutValidation("Authorization", this.GetAccessToken().Token);
+
+        // LOAD THE REQUEST
+
+        HttpResponseMessage httpResponse = this.HttpClient.SendAsync(request).Result;
+
+        // PARSE THE REQUEST
+
+        APIUpdateCollectionResponse parsedResponse = System.Text.Json.JsonSerializer.Deserialize<APIUpdateCollectionResponse>(httpResponse.Content.ReadAsStringAsync().Result) ?? throw new Exception("Unable to parse response.");
+
+        return parsedResponse;
+
+    }
+    
     private APILoadCollectionResponse LoadCollectionBatch(string idoName, List<string> properties, string? filter, string? orderBy = null, int? requestCap = 0, bool? distinct = null, string? clm = null, List<string>? clmParam = null, string? bookmark = null, string? pqc = null, bool? readOnly = null)
     {
 
@@ -353,6 +394,24 @@ public class SytelineAPI
         if (readOnly != null)
         {
             lQueryPrameters.Add("readOnly=" + EncodeValue(readOnly));
+        }
+
+        // BUILD THE REQUEST URL
+
+        return string.Join("&", lQueryPrameters);
+
+    }
+
+    private static string BuildUpdateCollectionParametersString(bool? refresh = null)
+    {
+
+        // CREATE LIST OF PARAMTERS TO STRINGY
+
+        List<string> lQueryPrameters = [];
+
+        if (refresh != null)
+        {
+            lQueryPrameters.Add("refresh=" + EncodeValue(refresh));
         }
 
         // BUILD THE REQUEST URL
