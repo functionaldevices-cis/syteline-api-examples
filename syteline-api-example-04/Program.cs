@@ -195,6 +195,93 @@ namespace syteline_api_examples {
                 ]
             );
 
+            // INSERT TWO PLANNER CODES USING CLEANER SYNTAX
+
+            response = sytelineAPI.InsertRecords(
+                idoName: "SLPlanners",
+                records: [
+                    new(
+                        properties: new()
+                        {
+                           ["PlanCode"] = "Z03",
+                           ["Description"] = "Test 3",
+                           ["ShowInDropDownList"] = "1"
+                        }
+                    ),
+                    new(
+                        properties: new()
+                        {
+                           ["PlanCode"] = "Z04",
+                           ["Description"] = "Test 4",
+                           ["ShowInDropDownList"] = "1"
+                        }
+                    )
+                ]
+            );
+
+            // UPDATE ONE OF THEM USING CLEANER SYNTAX
+
+            response = sytelineAPI.UpdateRecords(
+                idoName: "SLPlanners",
+                matchingProperties: [
+                    "PlanCode"
+                ],
+                records: [
+                    new(
+                        properties: new()
+                        {
+                           ["PlanCode"] = "Z04",
+                           ["Description"] = "Test 4 Updated",
+                           ["ShowInDropDownList"] = "0"
+                        }
+                    )
+                ]
+            );
+
+            // INSERT A USER DEFINED TYPE AND CHILD VALUES USING CLEANER SYNTAX
+
+            response = sytelineAPI.InsertRecords(
+                idoName: "UserDefinedTypes",
+                records: [
+                    new(
+                        properties: new()
+                        {
+                           ["Name"] = "MyUserDefinedColor2",
+                           ["Description"] = "This is a user defined type."
+                        },
+                        nestedCollections: [
+                            new(
+                                idoName: "UserDefinedTypeValues",
+                                links: [
+                                    new(
+                                        parentProperty: "Name",
+                                        childProperty: "TypeName"
+                                    )
+                                ],
+                                records: [
+                                    new(
+                                        properties: new()
+                                        {
+                                           ["TypeName"] = "MyUserDefinedColor",
+                                           ["Value"] = "Red",
+                                           ["Description"] = "This is red."
+                                        }
+                                    ),
+                                    new(
+                                        properties: new()
+                                        {
+                                           ["TypeName"] = "MyUserDefinedColor",
+                                           ["Value"] = "Green",
+                                           ["Description"] = "This is green."
+                                        }
+                                    )
+                                ]
+                            )
+                        ]
+                    )
+                ]
+            );
+
         }
 
     }

@@ -293,7 +293,50 @@ public class SytelineAPI
         return parsedResponse;
 
     }
-    
+
+    public APIUpdateCollectionResponse InsertRecords(string idoName, List<APIUpdateRecordsRequestRecord> records, bool refreshAfterSave = false)
+    {
+
+        return this.UpdateCollection(
+            idoName: idoName,
+            changes: this.BuildChanges(records, APIUpdateCollectionRequestChangeAction.Insert),
+            refreshAfterSave: refreshAfterSave
+        );
+
+    }
+
+    public APIUpdateCollectionResponse UpdateRecords(string idoName, List<string> matchingProperties, List<APIUpdateRecordsRequestRecord> records, bool refreshAfterSave = false)
+    {
+
+        return this.UpdateCollection(
+            idoName: idoName,
+            changes: this.BuildChanges(records, APIUpdateCollectionRequestChangeAction.Update, matchingProperties),
+            refreshAfterSave: refreshAfterSave
+        );
+
+    }
+    private List<APIUpdateCollectionRequestChange> BuildChanges(List<APIUpdateRecordsRequestRecord> records, APIUpdateCollectionRequestChangeAction action, List<string>? matchingProperties = null)
+    {
+
+        return records.Select(record => new APIUpdateCollectionRequestChange(
+            action: action,
+            properties: record.Properties.Select(prop => new APIUpdateCollectionRequestChangeProperty(
+                name: prop.Key,
+                value: prop.Value,
+                modified: !(action == APIUpdateCollectionRequestChangeAction.Update && matchingProperties != null && matchingProperties.Contains(prop.Key))
+            )).ToList().Concat(
+                record.NestedCollections != null ? record.NestedCollections.Select(nestedCollection => new APIUpdateCollectionRequestChangeProperty(
+                    nestedCollection: new APIUpdateCollectionRequestNestedCollection(
+                        idoName: nestedCollection.IDOName,
+                        links: nestedCollection.Links,
+                        changes: this.BuildChanges(nestedCollection.Records, APIUpdateCollectionRequestChangeAction.Insert)
+                    )
+                )) : []
+            ).ToList()
+        )).ToList();
+
+    }
+
     private APILoadCollectionResponse LoadCollectionBatch(string idoName, List<string> properties, string? filter, string? orderBy = null, int? requestCap = 0, bool? distinct = null, string? clm = null, List<string>? clmParam = null, string? bookmark = null, string? pqc = null, bool? readOnly = null)
     {
 
