@@ -24,7 +24,7 @@ public class APIUpdateCollectionRequestChangeProperty
     public bool? IsNestedCollection => this.NestedCollection != null ? true : (bool?)null;
 
     [JsonIgnore(Condition = JsonIgnoreCondition.WhenWritingNull)]
-    public APIUpdateCollectionRequest? NestedCollection { get; set; } = null;
+    public APIUpdateCollectionRequestNestedCollection? NestedCollection { get; set; } = null;
 
     [SetsRequiredMembers]
     public APIUpdateCollectionRequestChangeProperty(string name, string value, bool modified = false)
@@ -35,7 +35,7 @@ public class APIUpdateCollectionRequestChangeProperty
     }
 
     [SetsRequiredMembers]
-    public APIUpdateCollectionRequestChangeProperty(APIUpdateCollectionRequest? nestedCollection = null)
+    public APIUpdateCollectionRequestChangeProperty(APIUpdateCollectionRequestNestedCollection? nestedCollection = null)
     {
         this.NestedCollection = nestedCollection;
     }

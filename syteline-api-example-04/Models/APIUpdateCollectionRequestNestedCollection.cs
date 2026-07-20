@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace syteline_api_examples.Models;
 
-public class APIUpdateCollectionRequest
+public class APIUpdateCollectionRequestNestedCollection
 {
 
     public required string IDOName { get; set; }
@@ -18,7 +18,7 @@ public class APIUpdateCollectionRequest
     public List<APIUpdateCollectionRequestLink> Links { get; set; }
 
     [SetsRequiredMembers]
-    public APIUpdateCollectionRequest(string idoName, List<APIUpdateCollectionRequestLink> links, List<APIUpdateCollectionRequestChange> changes, bool refreshAfterSave = false)
+    public APIUpdateCollectionRequestNestedCollection(string idoName, List<APIUpdateCollectionRequestLink> links, List<APIUpdateCollectionRequestChange> changes, bool refreshAfterSave = false)
     {
         this.IDOName = idoName;
         this.RefreshAfterSave = refreshAfterSave;
