@@ -135,6 +135,7 @@ public class SytelineAPI
 
         // PARSE INPUT PARAMS
 
+        orderBy ??= [];
         string? orderByString = orderBy == null ? null : string.Join(", ", (orderBy ?? []).Select(property => property.OrderBy));
 
         // INIT GENERAL VARS
